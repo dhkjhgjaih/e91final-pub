@@ -11,9 +11,6 @@ pipeline {
         stage('Build Dev Environment'){
             steps {
                 echo 'Building Dev Environment'
-                sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@3.90.139.238 'touch -f fileFromJenkins'"
-                }
             }
             post {
                 success {
