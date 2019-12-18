@@ -47,7 +47,7 @@ pipeline {
             steps {
                 echo 'Merging Dev to Stage'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 "cd e91final-pub/ && git checkout stage && git merge dev && git remote set-url origin git@github.com:dhkjhgjaih/e91final-pub.git && yes | git push origin stage""
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'cd e91final-pub/ && git checkout stage && git merge dev && git remote set-url origin git@github.com:dhkjhgjaih/e91final-pub.git && yes | git push origin stage'"
                 }
             }
             post {
