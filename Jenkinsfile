@@ -13,7 +13,7 @@ pipeline {
                 }*/
                 echo 'Building Dev Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'if [ -d ~/e91final-pub ]; then sudo docker stop dev && sudo docker rm dev && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache; fi'"
                 }
                 
             }
@@ -69,7 +69,7 @@ pipeline {
                 }*/
                 echo 'Building Stage Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'if [ -d ~/e91final-pub ]; then sudo docker stop stage && sudo docker rm stage && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache; fi'"
                 }            }
             post {
                 success {
