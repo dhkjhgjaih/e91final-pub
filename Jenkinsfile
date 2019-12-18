@@ -42,7 +42,7 @@ pipeline {
         stage('Merge Dev to Stage'){
             steps {
                 echo 'Merging Dev to Stage'
-                sshagent (credentials: ['jenkins']) {
+                sshagent (credentials: ['e91GroupProject']) {
                 	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'cd e91final-pub/ && git checkout stage && git merge dev'"
                 }
             }
