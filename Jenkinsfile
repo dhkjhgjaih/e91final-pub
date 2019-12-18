@@ -10,16 +10,18 @@ pipeline {
     stages{
         stage('Build Dev Environment'){
             steps {
-                echo 'Building Dev Environment on ${params.dev-server}'
-                sh 'ping -c 1 8.8.8.8'
+                echo 'Building Dev Environment'
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@3.90.139.238 'touch -f fileFromJenkins'"
+                }
             }
             post {
                 success {
-                    echo 'Dev Environment Build Completed on ${params.dev-server}'
+                    echo 'Dev Environment Build Completed'
                 }
 
                 failure {
-                    echo 'Dev Environment Build FAILED on ${params.dev-server}'
+                    echo 'Dev Environment Build FAILED'
                 }
             }
         }
