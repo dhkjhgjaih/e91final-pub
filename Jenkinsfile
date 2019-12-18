@@ -12,6 +12,9 @@ pipeline {
             steps {
                 echo 'Building Dev Environment on ${params.dev-server}'
                 sh "ping -c 1 8.8.8.8"
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'touch -f fileFromJenkins'"
+                }
             }
             post {
                 success {
