@@ -11,7 +11,7 @@ pipeline {
         stage('Build Dev Environment'){
             steps {
                 echo 'Building Dev Environment on ${params.dev-server}'
-                ping -c 1 ${params.dev-server}
+                sh "ping -c 1 ${params.dev-server}"
             }
             post {
                 success {
