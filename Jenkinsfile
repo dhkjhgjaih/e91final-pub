@@ -85,11 +85,9 @@ pipeline {
         stage('Test Stage Environment'){
             steps {
                 echo 'Testing Stage Environment'
-		sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'response=$(curl -s -o /dev/null -w "%{http_code}" 54.236.8.50);
-		if [ "$response" != "200" ];
-		then;
- 		exit 1;
-		fi'"
+		sshagent (credentials: ['e91GroupProject']) {
+			sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'response=$(curl -s -o /dev/null -w "%{http_code}" 54.236.8.50); if [ "$response" != "200" ]; then exit 1; fi'"
+		}
             }
             post {
                 success {
