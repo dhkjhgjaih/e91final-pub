@@ -13,7 +13,7 @@ pipeline {
                 }*/
                 echo 'Building Dev Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'sudo if [ -d e91final-pub ]; then rm -rf e91final-pub fi git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'if [ -d ~/e91final-pub ]; then rm -rf e91final-pub; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache; fi'"
                 }
                 
             }
