@@ -1,18 +1,24 @@
 pipeline {
     agent any
 
+    parameters {
+         string(name: 'dev-server', defaultValue: '54.146.94.27', description: 'Dev Server')
+         string(name: 'stage-server', defaultValue: '52.90.14.242', description: 'Stage Server')
+         string(name: 'prod-server', defaultValue: '35.188.241.194', description: 'Prod Server')
+    }
+
     stages{
         stage('Build Dev Environment'){
             steps {
-                echo 'Building Dev Environment'
+                echo 'Building Dev Environment on ${params.dev-server}'
             }
             post {
                 success {
-                    echo 'Dev Environment Build Completed'
+                    echo 'Dev Environment Build Completed on ${params.dev-server}'
                 }
 
                 failure {
-                    echo 'Dev Environment Build FAILED'
+                    echo 'Dev Environment Build FAILED on ${params.dev-server}'
                 }
             }
         }
