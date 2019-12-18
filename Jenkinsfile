@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages{
-        stage('Build Dev Environment....'){
+        stage('Build Dev Environment'){
             steps {
                 echo 'Building Dev Environment'
                 sshagent (credentials: ['e91GroupProject']) {
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 echo 'Merging Dev to Stage'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'cd e91final-pub/ && git checkout stage && git merge dev && git remote set-url origin git@github.com:dhkjhgjaih/e91final-pub.git && yes | git push origin stage'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'cd e91final-pub/ && git checkout stage && git merge dev && git remote set-url origin git@github.com:dhkjhgjaih/e91final-pub.git'"
                 }
             }
             post {
