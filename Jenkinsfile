@@ -85,6 +85,9 @@ pipeline {
         stage('Test Stage Environment'){
             steps {
                 echo 'Testing Stage Environment'
+/*		sshagent (credentials: ['e91GroupProject']) {
+			sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'status_code=$(curl --write-out %{http_code} --silent --output /dev/null 54.236.8.50); if [[ "$status_code" =  200 ]] ; then echo "Site status changed to $status_code"; else echo "Not working"; fi; '"
+		}*/
             }
             post {
                 success {
