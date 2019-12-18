@@ -60,7 +60,12 @@ pipeline {
         stage('Build Stage Environment'){
             steps {
                 echo 'Building Stage Environment'
-            }
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@52.90.14.242 'sudo docker stop stage && sudo docker rm stage && sudo docker rmi centosapache && rm -rf e91final-pub'"
+                }
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@52.90.14.242 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache'"
+                }            }
             post {
                 success {
                     echo 'Stage Environment Build Completed'
@@ -105,7 +110,12 @@ pipeline {
         stage('Build Prod Environment'){
             steps {
                 echo 'Building Prod Environment'
-            }
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.188.241.194 'sudo docker stop prod && sudo docker rm prod && sudo docker rmi centosapache && rm -rf e91final-pub'"
+                }
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.188.241.194 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache'"
+                }            }
             post {
                 success {
                     echo 'Prod Environment Build Completed'
