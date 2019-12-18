@@ -1,19 +1,17 @@
 pipeline {
     agent any
 
-    parameters {
-         string(name: 'dev-server', defaultValue: '54.146.94.27', description: 'Dev Server')
-         string(name: 'stage-server', defaultValue: '52.90.14.242', description: 'Stage Server')
-         string(name: 'prod-server', defaultValue: '35.188.241.194', description: 'Prod Server')
-    }
-
     stages{
         stage('Build Dev Environment'){
             steps {
                 echo 'Building Dev Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@${params.dev-server} 'touch -f fileFromJenkins'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'touch -f fileFromJenkins'"
                 }
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache'"
+                }
+                
             }
             post {
                 success {
@@ -44,6 +42,9 @@ pipeline {
         stage('Merge Dev to Stage'){
             steps {
                 echo 'Merging Dev to Stage'
+                sshagent (credentials: ['jenkins']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.146.94.27 'cd e91final-pub/ && git checkout stage && git merge dev && git push origin stage'"
+                }
             }
             post {
                 success {
