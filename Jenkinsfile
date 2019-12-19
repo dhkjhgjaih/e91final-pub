@@ -24,9 +24,9 @@ pipeline {
         stage('Test Dev Environment'){
             steps {
                 echo 'Testing Dev Environment'
-/*		sshagent (credentials: ['e91GroupProject']) {
-			sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'status_code=$(curl --write-out %{http_code} --silent --output /dev/null 100.26.211.76); if [[ "$status_code" =  200 ]] ; then echo "Site status changed to $status_code"; else echo "Not working"; fi; '"
-		}*/
+		sshagent (credentials: ['e91GroupProject']) {
+			sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'status_code=$(curl --write-out %{http_code} --silent --output /dev/null 100.26.211.76); if [[ "$status_code" =  200 ]] ; then echo "Site status changed to $status_code" exit 0; else echo "Not working"; fi; '"
+		}
             }
             post {
                 success {
