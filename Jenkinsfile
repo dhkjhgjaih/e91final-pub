@@ -24,6 +24,7 @@ pipeline {
         stage('Test Dev Environment'){
             steps {
                 echo 'Testing Dev Environment'
+		sh "curl -I 100.26.211.76"
 		}
             post {
                 success {
