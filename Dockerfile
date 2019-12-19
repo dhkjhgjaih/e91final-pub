@@ -12,6 +12,7 @@ EXPOSE 80
 # CMD Instruction
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
-# Copy the index.html onto the image
-COPY index.html /var/www/html/
-COPY DanielTurner.jpg /var/www/html/
+# Copy the website content onto the image
+# content directory contains index.html, etc.
+# and is essentially wwwroot 
+COPY content/* /var/www/html/
