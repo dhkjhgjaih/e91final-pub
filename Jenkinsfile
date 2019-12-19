@@ -57,9 +57,11 @@ pipeline {
         
         stage('Build Stage Environment'){
             steps {
-           sshagent (credentials: ['e91GroupProject']) {
+                echo 'Building Stage Environment'
+                sshagent (credentials: ['e91GroupProject']) {
                 	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'if [ -d ~/e91final-pub ]; then sudo docker stop stage && sudo docker rm stage && sudo docker rmi centosapache && rm -rf e91final-pub; fi && git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache'"
-                }            }
+                }   
+            }
             post {
                 success {
                     echo 'Stage Environment Build Completed'
