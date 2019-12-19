@@ -24,7 +24,7 @@ pipeline {
         stage('Test Dev Environment'){
             steps {
                 echo 'Testing Dev Environment'
-		sh "curl -I 100.26.211.76"
+		sh "response=$(curl -s -o /dev/null -w "%{http_code}\n" 35.245.187.44); if [ "$response" != "200" ]; then exit 1; else exit 0; fi"
 		}
             post {
                 success {
@@ -74,6 +74,7 @@ pipeline {
         stage('Test Stage Environment'){
             steps {
                 echo 'Testing Stage Environment'
+		sh "curl -I 54.236.8.50"
 		}
             post {
                 success {
@@ -120,6 +121,7 @@ pipeline {
         stage('Test Prod Environment'){
             steps {
                 echo 'Testing Prod Environment'
+		sh "curl -I 35.245.187.44"
             }
             post {
                 success {
