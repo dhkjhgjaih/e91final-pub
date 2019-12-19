@@ -105,7 +105,7 @@ pipeline {
         stage('Build Prod Environment'){
             steps {
               sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.245.187.44 'if [ -d ~/e91final-pub ]; then sudo docker stop prod && sudo docker rm prod && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache; fi'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.236.245.165 'if [ -d ~/e91final-pub ]; then sudo docker stop prod && sudo docker rm prod && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache; fi'"
                 }            }
             post {
                 success {
@@ -121,7 +121,7 @@ pipeline {
         stage('Test Prod Environment'){
             steps {
                 echo 'Testing Prod Environment'
-		sh "curl -I 35.245.187.44"
+		sh "curl -I 35.236.245.165"
             }
             post {
                 success {
