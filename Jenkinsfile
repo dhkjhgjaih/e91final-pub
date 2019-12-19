@@ -24,7 +24,7 @@ pipeline {
         stage('Test Dev Environment'){
             steps {
                 echo 'Testing Dev Environment'
-		ssh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'response=$(curl -s -o /dev/null -w "%{http_code}\n" 100.26.211.76); if [ "$response" != "200" ]; then exit 1; fi'"
+		sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'response=$(curl -s -o /dev/null -w "%{http_code}\n" 100.26.211.76); if [ "$response" != "200" ]; then exit 1; fi'"
             }
             post {
                 success {
@@ -74,7 +74,7 @@ pipeline {
         stage('Test Stage Environment'){
             steps {
                 echo 'Testing Stage Environment'
-		ssh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'response=$(curl -s -o /dev/null -w "%{http_code}\n" 54.236.8.50); if [ "$response" != "200" ]; then exit 1; fi'"
+		sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'response=$(curl -s -o /dev/null -w "%{http_code}\n" 54.236.8.50); if [ "$response" != "200" ]; then exit 1; fi'"
             }
             post {
                 success {
