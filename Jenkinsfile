@@ -24,7 +24,7 @@ pipeline {
         stage('Test Dev Environment'){
             steps {
                 echo 'Testing Dev Environment'
-		sh "response=$(curl -s -o /dev/null -w "%{http_code}\n" 35.245.187.44); if [ "$response" != "200" ]; then echo "website is running"; else echo "website is down"; fi"
+		sh "curl -I 100.26.211.76"
 		}
             post {
                 success {
