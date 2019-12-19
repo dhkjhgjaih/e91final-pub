@@ -90,6 +90,8 @@ pipeline {
         stage('Merge Stage to Prod'){
             steps {
                 echo 'Merging Stage to Prod'
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'cd e91final-pub/ && git checkout master && git merge stage && git remote set-url origin git@github.com:dhkjhgjaih/e91final-pub.git && yes | git push origin master'"
             }
             post {
                 success {
