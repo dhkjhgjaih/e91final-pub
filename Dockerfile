@@ -14,3 +14,4 @@ CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
 # Copy the index.html onto the image
 COPY index.html /var/www/html/
+COPY DanielTurner.jpg /var/www/html/
