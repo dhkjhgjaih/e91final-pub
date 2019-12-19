@@ -25,6 +25,18 @@ pipeline {
             steps {
                 echo 'Testing Dev Environment'
 		sh "curl -I 100.26.211.76"
+		script {
+			status = sh(
+				returnStdout: true,
+				script: "curl -s -o /dev/null -w '%{http_code}' 100.26.211.76"
+				);
+			if (status != 200) {
+				echo "failure";				
+				} else {
+				echo "success";				
+				}
+			fi
+			}
 		}
             post {
                 success {
