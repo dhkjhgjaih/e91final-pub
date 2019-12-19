@@ -4,9 +4,16 @@ pipeline {
     stages{
         stage('Build Dev Environment'){
             steps {
+/*              NOTE This doesn't work unless it's already been run...need to adjust order of operations...
+                same with stage and prod...
+
+                echo 'Cleaning Old Builds'
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'sudo docker stop dev && sudo docker rm dev && sudo docker rmi centosapache && rm -rf e91final-pub'"
+                }*/
                 echo 'Building Dev Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'if [ -d ~/e91final-pub ]; then sudo docker stop dev && sudo docker rm dev && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache; fi'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout dev && sudo docker build -t centosapache . && sudo docker run --name dev -d -p 80:80 centosapache'"
                 }
                 
             }
@@ -24,9 +31,6 @@ pipeline {
         stage('Test Dev Environment'){
             steps {
                 echo 'Testing Dev Environment'
-		sshagent (credentials: ['e91GroupProject']) {
-			sh "ssh -o StrictHostKeyChecking=no e91GroupProject@100.26.211.76 'status_code=$(curl --write-out %{http_code} --silent --output /dev/null 100.26.211.76); if [[ "$status_code" =  200 ]] ; then echo "Site status changed to $status_code" exit 0; else echo "Not working"; fi; '"
-		}
             }
             post {
                 success {
@@ -59,9 +63,13 @@ pipeline {
         
         stage('Build Stage Environment'){
             steps {
+                /*echo 'Cleaning Old Builds'
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'sudo docker stop stage && sudo docker rm stage && sudo docker rmi centosapache && rm -rf e91final-pub'"
+                }*/
                 echo 'Building Stage Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'if [ -d ~/e91final-pub ]; then sudo docker stop stage && sudo docker rm stage && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache; fi'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout stage && sudo docker build -t centosapache . && sudo docker run --name stage -d -p 80:80 centosapache'"
                 }            }
             post {
                 success {
@@ -77,7 +85,7 @@ pipeline {
         stage('Test Stage Environment'){
             steps {
                 echo 'Testing Stage Environment'
-
+            }
             post {
                 success {
                     echo 'Stage Environment Build Test Passed'
@@ -89,29 +97,30 @@ pipeline {
             }
         }
         
-        stage('Merge Stage to Master'){
+        stage('Merge Stage to Prod'){
             steps {
-                echo 'Merging Stage to Master'
-                sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@54.236.8.50 'cd e91final-pub/ && git checkout master && git merge stage && git remote set-url origin git@github.com:dhkjhgjaih/e91final-pub.git && yes | git push origin master'"
-                }
+                echo 'Merging Stage to Prod'
             }
             post {
                 success {
-                    echo 'Stage Merged to Master'
+                    echo 'Stage Merged to Prod'
                 }
 
                 failure {
-                    echo 'Stage Merge to Master FAILED'
+                    echo 'Stage Merge to Prod FAILED'
                 }
             }
         }
 
         stage('Build Prod Environment'){
             steps {
+                /*echo 'Cleaning Old Builds'
+                sshagent (credentials: ['e91GroupProject']) {
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.188.241.194 'sudo docker stop prod && sudo docker rm prod && sudo docker rmi centosapache && rm -rf e91final-pub'"
+                }*/
                 echo 'Building Prod Environment'
                 sshagent (credentials: ['e91GroupProject']) {
-                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.245.187.44 'if [ -d ~/e91final-pub ]; then sudo docker stop prod && sudo docker rm prod && sudo docker rmi centosapache && rm -rf e91final-pub; git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache; else git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache; fi'"
+                	sh "ssh -o StrictHostKeyChecking=no e91GroupProject@35.188.241.194 'git clone https://github.com/dhkjhgjaih/e91final-pub.git && cd e91final-pub/ && git checkout master && sudo docker build -t centosapache . && sudo docker run --name prod -d -p 80:80 centosapache'"
                 }            }
             post {
                 success {
