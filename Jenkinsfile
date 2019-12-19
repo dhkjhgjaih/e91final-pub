@@ -35,7 +35,6 @@ pipeline {
 				} else {
 				echo "success";				
 				}
-			fi
 			}
 		}
             post {
