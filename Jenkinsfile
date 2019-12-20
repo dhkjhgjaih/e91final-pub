@@ -88,6 +88,18 @@ pipeline {
             steps {
                 echo 'Testing Stage Environment'
 		sh "curl -I 54.236.8.50"
+		script {
+			status = sh(
+				returnStdout: true,
+				script: "curl -s -o /dev/null -w '%{http_code}' 54.236.8.50"
+				);
+			if (status != "200") {
+				echo status && exit 1;				
+				} else {
+				echo "Success, Status Code is ${status}" ;				
+				}
+			}
+		}
 		}
             post {
                 success {
