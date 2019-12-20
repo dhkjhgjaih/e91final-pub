@@ -100,7 +100,6 @@ pipeline {
 				}
 			}
 		}
-		}
             post {
                 success {
                     echo 'Stage Environment Build Test Passed'
