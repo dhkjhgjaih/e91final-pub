@@ -151,7 +151,18 @@ pipeline {
             steps {
                 echo 'Testing Prod Environment'
 		sh "curl -I 35.236.245.165"
-            }
+		script {
+			status = sh(
+				returnStdout: true,
+				script: "curl -s -o /dev/null -w '%{http_code}' 35.236.245.165"
+				);
+			if (status != "200") {
+				echo status && exit 1;				
+				} else {
+				echo "Success, Status Code is ${status}" ;				
+				}
+			}
+            	}
             post {
                 success {
                     echo 'Prod Environment Build Test Passed'
