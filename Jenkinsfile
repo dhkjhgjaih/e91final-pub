@@ -33,7 +33,7 @@ pipeline {
 			if (status != "200") {
 				echo status && exit 1;				
 				} else {
-				echo "success";				
+				echo "Success Status Code is " && status ;				
 				}
 			}
 		}
